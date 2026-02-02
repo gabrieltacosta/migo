@@ -3,6 +3,7 @@ import ClipboardButton from "@/components/clipboard-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import prisma from "@/lib/prisma";
+import BackButton from "./_components/back-button";
 
 const ParticipantPage = async ({
   params,
@@ -76,12 +77,7 @@ const ParticipantPage = async ({
                           ?
                         </h2>
                         <div className="flex gap-4 pt-4">
-                          <Button
-                            type="button"
-                            className="rounded-full bg-white px-12 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          >
-                            Não
-                          </Button>
+                          <BackButton />
                           <Button
                             type="button"
                             className="rounded-full bg-blue-600 px-12 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
