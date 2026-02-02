@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Description = () => {
     return (
-        <section className="bg-gray-900 pb-32 pt-24 sm:pt-32">
+        <section className="bg-[#3e2670] pb-32 pt-24 sm:pt-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-base font-semibold leading-7 text-blue-400">Fácil de usar</h2>
