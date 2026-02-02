@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Group" ALTER COLUMN "category" SET DEFAULT 'AMIGO_SECRETO';

@@ -10,16 +10,28 @@ datasource db {
 model Group {
   id           String        @id @default(cuid())
   name         String
+  category     Category      @default(AMIGO_SECRETO)
   participants Participant[]
   createdAt    DateTime      @default(now())
 }
 
 model Participant {
-  id             String   @id @default(cuid())
-  name           String
-  groupId        String
-  group          Group    @relation(fields: [groupId], references: [id])
+  id            String    @id @default(cuid())
+  name          String
+  groupId       String
+  group         Group     @relation(fields: [groupId], references: [id])
   // ID do participante que esta pessoa tirou:
-  secretSantaId  String?  
-  revealedAt     DateTime?
+  secretSantaId String?
+  revealedAt    DateTime?
+}
+
+enum Category {
+  AMIGO_SECRETO
+  AMIGO_CHOCOLATE
+  AMIGO_CHINELO
+  AMIGO_ONCA
+  AMIGO_VINHO
+  AMIGO_LIVRO
+  AMIGO_NATAL
+  AMIGO_PASCOA
 }

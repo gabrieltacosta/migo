@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { createGroupAndDraw } from "@/app/_actions/draw"
+import { GroupForm } from "@/components/group-form"
 
 export default function NewGroupPage() {
   const [step, setStep] = useState(1)
@@ -53,6 +54,7 @@ export default function NewGroupPage() {
           {step === 1 && (
             <div className="space-y-4">
               <div className="space-y-2">
+                <GroupForm />
                 <Label>Nome do Grupo</Label>
                 <Input
                   placeholder="Ex: Família Silva"
