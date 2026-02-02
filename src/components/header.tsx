@@ -10,7 +10,7 @@ const Header = () => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="https://migosecreto.com" className="-m-1.5 p-1.5">
+          <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Migo Secreto</span>
             <Gift className="w-8 h-8 text-primary" />
           </Link>

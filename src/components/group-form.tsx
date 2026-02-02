@@ -1,24 +1,14 @@
 "use client";
 
-import * as React from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -26,122 +16,126 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
-  SelectSeparator,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
-const spokenLanguages = [
-  { label: "English", value: "en" },
-  { label: "Spanish", value: "es" },
-  { label: "French", value: "fr" },
-  { label: "German", value: "de" },
-  { label: "Italian", value: "it" },
-  { label: "Chinese", value: "zh" },
-  { label: "Japanese", value: "ja" },
-] as const;
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea"
+import { Gift } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import z from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 const formSchema = z.object({
-  language: z
-    .string()
-    .min(1, "Please select your spoken language.")
-    .refine((val) => val !== "auto", {
-      message:
-        "Auto-detection is not allowed. Please select a specific language.",
-    }),
-});
+  category: z.string().min(1, "Categoria obrigatória"),
+  groupName: z.string().min(1, "Nome do grupo obrigatório"),
+  description: z.string().optional()
+})
 
-export function FormRhfSelect() {
-  const form = useForm<z.infer<typeof formSchema>>({
+type FormSchema = z.infer<typeof formSchema>
+
+
+export function GroupForm() {
+  const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      language: "",
-    },
-  });
+      category: "amigo-secreto",
+      groupName: "",
+      description: ""
+    }
+  })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="bg-code text-code-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-      position: "bottom-right",
-      classNames: {
-        content: "flex flex-col gap-2",
-      },
-      style: {
-        "--border-radius": "calc(var(--radius)  + 4px)",
-      } as React.CSSProperties,
-    });
+  const onSubmit = (data: FormSchema) => {
+    console.log(data)
   }
 
+
   return (
-    <Card className="w-full sm:max-w-lg">
-      <CardHeader>
-        <CardTitle>Language Preferences</CardTitle>
-        <CardDescription>
-          Select your preferred spoken language.
-        </CardDescription>
-      </CardHeader>
+    <Card className="w-full border-none shadow-none">
       <CardContent>
-        <form id="form-rhf-select" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="form-group" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
-              name="language"
+              name="category"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field
-                  orientation="responsive"
-                  data-invalid={fieldState.invalid}
-                >
+                <Field orientation={"vertical"} data-invalid={fieldState.invalid}>
                   <FieldContent>
-                    <FieldLabel htmlFor="form-rhf-select-language">
-                      Spoken Language
-                    </FieldLabel>
-                    <FieldDescription>
-                      For best results, select the language you speak.
-                    </FieldDescription>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    <FieldLabel htmlFor="form-group-category">Categoria</FieldLabel>
                   </FieldContent>
-                  <Select
-                    name={field.name}
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger
-                      id="form-rhf-select-language"
-                      aria-invalid={fieldState.invalid}
-                      className="min-w-30"
-                    >
-                      <SelectValue placeholder="Select" />
+                  <Select name={field.name} value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="form-group-category" aria-invalid={fieldState.invalid} className="w-full">
+                      <SelectValue placeholder="Selecione uma categoria" />
                     </SelectTrigger>
-                    <SelectContent position="item-aligned">
-                      <SelectItem value="auto">Auto</SelectItem>
-                      <SelectSeparator />
-                      {spokenLanguages.map((language) => (
-                        <SelectItem key={language.value} value={language.value}>
-                          {language.label}
-                        </SelectItem>
-                      ))}
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Categorias</SelectLabel>
+                        <SelectItem value="amigo-secreto">🤫 Amigo Secreto</SelectItem>
+                        <SelectItem value="amigo-chocolate">🍫 Amigo Chocolate</SelectItem>
+                        <SelectItem value="amigo-chinelo">🩴 Amigo Chinelo</SelectItem>
+                        <SelectItem value="amigo-onca">🐆 Amigo da Onça</SelectItem>
+                        <SelectItem value="amigo-vinho">🍷 Amigo Vinho</SelectItem>
+                        <SelectItem value="amigo-livro">📖 Amigo Livro</SelectItem>
+                        <SelectItem value="amigo-natal">🎅 Amigo Secreto de Natal</SelectItem>
+                        <SelectItem value="amigo-pascoa">🐰 Amigo Páscoa</SelectItem>
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>)}
+            />
+            <Controller
+              name="groupName"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field orientation={"vertical"} data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-group-groupName">Nome do Grupo</FieldLabel>
+                  <Input
+                    {...field}
+                    id="form-group-groupName"
+                    placeholder="Amigo Secreto da Família"
+                  />
+                  {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
                 </Field>
+              )}
+            />
+
+            <Controller
+              name="description"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field orientation={"vertical"} data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="form-group-description">Descrição</FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="form-group-description"
+                    aria-invalid={fieldState.invalid}
+                    placeholder="Uma breve descrição sobre o amigo secreto. Adicione informações que você acha relevante."
+                    rows={10}
+                  />
+                  {fieldState.invalid && (<FieldError errors={[fieldState.error]} />)}
+                </Field>
+
               )}
             />
           </FieldGroup>
         </form>
       </CardContent>
       <CardFooter>
-        <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button>
-          <Button type="submit" form="form-rhf-select">
-            Save
+        <Field orientation={"vertical"}>
+          <Button
+            type="submit"
+            className="w-full"
+            size="lg"
+            form="form-group"
+          >
+            <Gift className="mr-2 h-4 w-4" />
+            Criar Amigo Secreto
           </Button>
         </Field>
       </CardFooter>

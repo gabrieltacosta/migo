@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   weight: ["400", "700"],
@@ -21,10 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${poppins.className} antialiased min-h-dvh`}>
+      <body className={`${poppins.className} antialiased min-h-dvh`} cz-shortcut-listen="true">
         <Header />
         {children}
         <Footer />
+        <Toaster />
       </body>
     </html>
   );

@@ -6,3 +6,20 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model Group {
+  id           String        @id @default(cuid())
+  name         String
+  participants Participant[]
+  createdAt    DateTime      @default(now())
+}
+
+model Participant {
+  id             String   @id @default(cuid())
+  name           String
+  groupId        String
+  group          Group    @relation(fields: [groupId], references: [id])
+  // ID do participante que esta pessoa tirou:
+  secretSantaId  String?  
+  revealedAt     DateTime?
+}
