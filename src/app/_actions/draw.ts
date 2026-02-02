@@ -4,6 +4,13 @@ import prisma from "@/lib/prisma" // Seu cliente Prisma ou Supabase
 import { redirect } from "next/navigation"
 
 export async function createGroupAndDraw(formData: { groupName: string, names: string[] }) {
+
+  if (!formData.names || formData.names.length < 3) {
+    throw new Error(
+      "Adicione pelo menos 3 participantes para realizar o sorteio"
+    );
+  }
+
   // 1. Algoritmo de Embaralhamento (Fisher-Yates)
   const participants = [...formData.names];
   const shuffled = [...participants];

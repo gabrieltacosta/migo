@@ -28,8 +28,7 @@ export default function NewGroupPage() {
   }
 
   const onClick = () => {
-    const sorteados = createGroupAndDraw(formData.participants)
-    console.log(sorteados)
+    const draw = createGroupAndDraw({ groupName: formData.groupName, names: formData.participants })
   }
 
   return (
@@ -59,6 +58,7 @@ export default function NewGroupPage() {
                   placeholder="Ex: Família Silva"
                   value={formData.groupName}
                   onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
+                  onKeyDown={(e) => e.key === 'Enter' && setStep(2)}
                 />
               </div>
               <Button onClick={() => setStep(2)} disabled={!formData.groupName}>Próximo</Button>
