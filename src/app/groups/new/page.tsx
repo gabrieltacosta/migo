@@ -1,43 +1,49 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { createGroupAndDraw } from "@/app/_actions/draw"
-import { GroupForm } from "@/components/group-form"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { createGroupAndDraw } from "@/app/_actions/draw";
+import { GroupForm } from "@/components/group-form";
 
 export default function NewGroupPage() {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     groupName: "",
     description: "",
     participants: [] as string[],
-  })
-  const [currentName, setCurrentName] = useState("")
+  });
+  const [currentName, setCurrentName] = useState("");
 
   // Lógica para adicionar participante
   const addParticipant = () => {
     if (currentName.trim()) {
       setFormData({
         ...formData,
-        participants: [...formData.participants, currentName.trim()]
-      })
-      setCurrentName("")
+        participants: [...formData.participants, currentName.trim()],
+      });
+      setCurrentName("");
     }
-  }
+  };
 
   const onClick = () => {
-    const draw = createGroupAndDraw({ groupName: formData.groupName, names: formData.participants })
-  }
+    createGroupAndDraw({
+      groupName: formData.groupName,
+      names: formData.participants,
+    });
+  };
 
   return (
     <div className="max-w-2xl mx-auto p-6">
       {/* Indicador de Etapas */}
       <div className="flex justify-between mb-8">
         {[1, 2, 3].map((i) => (
-          <div key={i} className={`h-2 w-full mx-1 rounded ${step >= i ? 'bg-primary' : 'bg-muted'}`} />
+          <div
+            key={i}
+            className={`h-2 w-full mx-1 rounded ${step >= i ? "bg-primary" : "bg-muted"}`}
+          />
         ))}
       </div>
 
@@ -59,11 +65,15 @@ export default function NewGroupPage() {
                 <Input
                   placeholder="Ex: Família Silva"
                   value={formData.groupName}
-                  onChange={(e) => setFormData({ ...formData, groupName: e.target.value })}
-                  onKeyDown={(e) => e.key === 'Enter' && setStep(2)}
+                  onChange={(e) =>
+                    setFormData({ ...formData, groupName: e.target.value })
+                  }
+                  onKeyDown={(e) => e.key === "Enter" && setStep(2)}
                 />
               </div>
-              <Button onClick={() => setStep(2)} disabled={!formData.groupName}>Próximo</Button>
+              <Button onClick={() => setStep(2)} disabled={!formData.groupName}>
+                Próximo
+              </Button>
             </div>
           )}
 
@@ -75,28 +85,48 @@ export default function NewGroupPage() {
                   placeholder="Nome do participante"
                   value={currentName}
                   onChange={(e) => setCurrentName(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && addParticipant()}
+                  onKeyDown={(e) => e.key === "Enter" && addParticipant()}
                 />
                 <Button onClick={addParticipant}>Adicionar</Button>
               </div>
 
-              <ul className="space-y-2 border rounded p-4 min-h-[100px]">
+              <ul className="space-y-2 border rounded p-4 min-h-25">
                 {formData.participants.map((p, idx) => (
-                  <li key={idx} className="bg-secondary p-2 rounded flex justify-between items-center">
+                  <li
+                    key={idx}
+                    className="bg-secondary p-2 rounded flex justify-between items-center"
+                  >
                     {p}
-                    <Button variant="ghost" size="sm" onClick={() => {
-                      const newP = [...formData.participants];
-                      newP.splice(idx, 1);
-                      setFormData({ ...formData, participants: newP });
-                    }}>x</Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const newP = [...formData.participants];
+                        newP.splice(idx, 1);
+                        setFormData({ ...formData, participants: newP });
+                      }}
+                    >
+                      x
+                    </Button>
                   </li>
                 ))}
-                {formData.participants.length === 0 && <p className="text-muted-foreground">Nenhum participante adicionado.</p>}
+                {formData.participants.length === 0 && (
+                  <p className="text-muted-foreground">
+                    Nenhum participante adicionado.
+                  </p>
+                )}
               </ul>
 
               <div className="flex justify-between">
-                <Button variant="outline" onClick={() => setStep(1)}>Voltar</Button>
-                <Button onClick={() => setStep(3)} disabled={formData.participants.length < 3}>Próximo</Button>
+                <Button variant="outline" onClick={() => setStep(1)}>
+                  Voltar
+                </Button>
+                <Button
+                  onClick={() => setStep(3)}
+                  disabled={formData.participants.length < 3}
+                >
+                  Próximo
+                </Button>
               </div>
             </div>
           )}
@@ -104,10 +134,17 @@ export default function NewGroupPage() {
           {/* ETAPA 3: REVISÃO */}
           {step === 3 && (
             <div className="space-y-4">
-              <p><strong>Grupo:</strong> {formData.groupName}</p>
-              <p><strong>Total:</strong> {formData.participants.length} participantes</p>
+              <p>
+                <strong>Grupo:</strong> {formData.groupName}
+              </p>
+              <p>
+                <strong>Total:</strong> {formData.participants.length}{" "}
+                participantes
+              </p>
               <div className="flex justify-between">
-                <Button variant="outline" onClick={() => setStep(2)}>Voltar</Button>
+                <Button variant="outline" onClick={() => setStep(2)}>
+                  Voltar
+                </Button>
                 <Button onClick={onClick}>Criar e Sortear</Button>
               </div>
             </div>
@@ -115,5 +152,5 @@ export default function NewGroupPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

@@ -4,6 +4,7 @@ import ListParticipants from "@/components/list-participants";
 import ClipboardButton from "@/components/clipboard-button";
 import WhatsappButton from "@/components/whatsapp-button";
 import prisma from "@/lib/prisma";
+import { CATEGORY_LABELS } from "@/app/_constants/categories";
 
 export default async function ShareLink({
   params,
@@ -18,13 +19,13 @@ export default async function ShareLink({
 
   const groupName = await prisma.group.findUnique({
     where: { id: groupId },
-    select: { name: true },
+    select: { name: true, category: true },
   });
 
   return (
     <div>
       {created && <ConfettiTrigger />}
-      <main className="container mx-auto">
+      <main className="container mx-auto px-2">
         <div className="bg-white">
           <div className="mx-auto w-full max-w-7xl p-4 sm:p-6 lg:p-8">
             <div className="mx-auto flex flex-col items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:gap-y-24">
@@ -76,18 +77,34 @@ export default async function ShareLink({
                       <p className="text-base font-semibold leading-7 text-blue-600">
                         Informações do grupo
                       </p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm font-bold text-gray-600">
+                          {groupName &&
+                            groupName.category &&
+                            CATEGORY_LABELS[
+                              groupName.category as keyof typeof CATEGORY_LABELS
+                            ]}
+                        </p>
+                      </div>
                       <h2 className="mt-2 text-3xl font-bold text-gray-900">
                         {groupName?.name}
                       </h2>
                     </div>
                     <div className="pt-8">
-                        <p className="text-base font-semibold leading-7 text-blue-600">Link do grupo</p>
-                        <ClipboardButton shareUrl={shareUrl} />
+                      <p className="text-base font-semibold leading-7 text-blue-600">
+                        Link do grupo
+                      </p>
+                      <ClipboardButton shareUrl={shareUrl} />
                     </div>
                     <div className="pt-8">
-                        <p className="text-base font-semibold leading-7 text-blue-600">Participantes</p>
-                        <p className="my-2 text-gray-600">Clique no seu nome para registrar sua senha e ver quem você tirou.</p>
-                        <ListParticipants groupId={groupId} />
+                      <p className="text-base font-semibold leading-7 text-blue-600">
+                        Participantes
+                      </p>
+                      <p className="my-2 text-gray-600">
+                        Clique no seu nome para registrar sua senha e ver quem
+                        você tirou.
+                      </p>
+                      <ListParticipants groupId={groupId} />
                     </div>
                   </div>
                 )}
